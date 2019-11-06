@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+>
+    <data>
+        <variable name="registerViewModel" type="com.example.geoffrey.bibliotheekapp.viewModel.RegisterViewModel"/>
+    </data>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <TextView
+                android:text="@{registerViewModel.token}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/token"
+                android:layout_centerHorizontal="true"
+        />
+        <TextView
+                android:text="username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/txtUsername"
+                android:layout_margin="20dp"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="@={registerViewModel._username}"
+                android:ems="10"
+                android:id="@+id/etUsername" android:layout_margin="20dp"/>
+        <TextView
+                android:text="Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/txtPassword"
+                android:layout_margin="20dp"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:text="@={registerViewModel._password}"
+                android:id="@+id/etPassword" android:layout_margin="20dp"/>
+        <TextView
+                android:text="Repeat password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtRepeatPassword"
+                android:layout_margin="20dp"
+
+        />
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:layout_margin="20dp"
+                android:text="@={registerViewModel._repeatPassword}"
+                android:id="@+id/etRepeatPassword"/>
+        <Button
+                android:text="Register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/btnRegistration"
+                android:layout_margin="20dp"
+                android:onClick="@{() -> registerViewModel.checkUsername()}"
+        />
+    </LinearLayout>
+</layout>
