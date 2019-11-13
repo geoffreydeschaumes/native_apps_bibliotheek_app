@@ -3,17 +3,24 @@ package com.example.geoffrey.bibliotheekapp.viewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.content.Context
+import android.content.Intent
 import android.databinding.BaseObservable
 import android.databinding.Bindable
+import android.support.v4.content.ContextCompat.startActivity
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
+import androidx.navigation.Navigation
+import com.example.geoffrey.bibliotheekapp.activities.MainActivity
 import com.example.geoffrey.bibliotheekapp.models.User
 import com.example.geoffrey.bibliotheekapp.network.BookApi
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-public class RegisterViewModel:  ViewModel() {
-
+class RegisterViewModel():  ViewModel() {
     @Bindable
     var _username = MutableLiveData<String>()
     val username: LiveData<String>
@@ -32,10 +39,6 @@ public class RegisterViewModel:  ViewModel() {
     val token: LiveData<String>
     get() = _token
 
-    private val _response =  MutableLiveData<String>()
-    val response: LiveData<String>
-    get() = _response
-
 
     init {
         _username.value = ""
@@ -44,47 +47,52 @@ public class RegisterViewModel:  ViewModel() {
         _token.value = ""
     }
 
-    fun checkUsername() {
+    fun checkUsername(view:View) {
         val user = User(username.value.toString(), password.value.toString())
-        BookApi.retrofitService.checkUsername(user).enqueue(object: Callback<User> {
-            override fun onFailure(call: Call<User>, t: Throwable) {
+        BookApi.retrofitService.checkUsername(user).enqueue(object: Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 _token.value = "Failure " + t.message
             }
 
-            override fun onResponse(call: Call<User>, response: Response<User>) {
-                registrate()
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if(response.body()!!.string().length != 25){
+                    registrate(view)
+                }
+                else {
+                    _token.value = "The username does exist already!"
+                }
             }
 
         })
     }
 
-    fun registrate() {
+    fun registrate(view:View) {
         val user = User(username.value.toString(), password.value.toString())
         if(username.value.equals(null) || username.value.equals("") ||password.value.equals(null) || password.value.equals("") || repeatPassword.value.equals(null) || repeatPassword.value.equals("")){
             _token.value = "Fill in all the fields."
-            Log.d(_token.value.toString(), "token1")
         }
         else if (password.value.toString() != repeatPassword.value.toString()) {
             _token.value = "Repeat password isn't the same as password."
-            Log.d(_token.value.toString(), "token2")
         }
         else {
-            BookApi.retrofitService.register(user).enqueue(object : Callback<User> {
-                override fun onFailure(call: Call<User>, t: Throwable) {
-                    _response.value = "Failure" + t.message
+            BookApi.retrofitService.register(user).enqueue(object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     _token.value = "Failure" + t.message
                 }
 
-                override fun onResponse(call: Call<User>, response: Response<User>) {
-                    onUsernameRegister(response, user)
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    onUsernameRegister(response, user, view)
                     _token.value = "true"
                 }
 
             })
         }
     }
-    fun onUsernameRegister(response: Response<User>, user:User) {
+
+    fun onUsernameRegister(response: Response<ResponseBody>, user:User, view:View) {
         Log.d(response.body().toString(), "body voor registratiescherm.")
+        val i = Intent(view.context, MainActivity::class.java)
+        startActivity(view.context, i, null)
     }
 
 }

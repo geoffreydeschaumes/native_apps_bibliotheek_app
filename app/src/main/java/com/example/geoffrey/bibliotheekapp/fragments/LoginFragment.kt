@@ -1,6 +1,7 @@
 package com.example.geoffrey.bibliotheekapp.fragments
 
 
+
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -22,13 +23,10 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-       
         binding = DataBindingUtil.inflate<FragmentLoginBinding>(inflater, R.layout.fragment_login, container, false)
-
-        binding.txtSignUp.setOnClickListener {
-            view:View -> Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registrationFragment)
-        }
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        binding.loginViewModel = loginViewModel
+        binding.setLifecycleOwner(this)
         return binding.root
     }
 }

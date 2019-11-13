@@ -2,31 +2,46 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 
 >
+    <data>
+        <variable name="loginViewModel" type="com.example.geoffrey.bibliotheekapp.viewModel.LoginViewModel"/>
+    </data>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
         <TextView
-                android:text="TextView"
+                android:id="@+id/token"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/textView"
-                android:layout_margin="20dp"/>
+                android:layout_height="wrap_content"
+                android:text="@={loginViewModel._token}"
+                android:gravity="center"/>
+
+        <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Login" />
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="Name"
+                android:text="@={loginViewModel._username}"
                 android:ems="10"
                 android:id="@+id/editText" android:layout_margin="20dp"/>
+
         <TextView
-                android:text="TextView"
+                android:id="@+id/textView2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/textView2"
-                android:layout_margin="20dp"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Password" />
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:text="@={loginViewModel._password}"
                 android:ems="10"
                 android:id="@+id/editText2" android:layout_margin="20dp"/>
         <TextView
@@ -38,6 +53,8 @@
                 android:text="Login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/btnLogin"
+                android:onClick="@{(view) -> loginViewModel.loginUser(view)}"
                 android:layout_margin="20dp"/>
+
     </LinearLayout>
 </layout>

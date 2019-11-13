@@ -2,6 +2,7 @@ package com.example.geoffrey.bibliotheekapp.fragments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -16,6 +17,7 @@ import com.example.geoffrey.bibliotheekapp.databinding.FragmentRegistrationBindi
 class RegistrationFragment : Fragment() {
 
     private lateinit var registerViewModel: RegisterViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,8 +26,6 @@ class RegistrationFragment : Fragment() {
         registerViewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
         binding.registerViewModel = registerViewModel
         binding.setLifecycleOwner(this)
-
-                
 
         return binding.root
     }

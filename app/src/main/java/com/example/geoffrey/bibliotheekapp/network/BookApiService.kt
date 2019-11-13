@@ -3,6 +3,7 @@ package com.example.geoffrey.bibliotheekapp.network
 import com.example.geoffrey.bibliotheekapp.models.User
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import okhttp3.ResponseBody
 import retrofit2.Call
 
 import retrofit2.Retrofit
@@ -23,13 +24,13 @@ private val retrofit = Retrofit.Builder()
 
 interface BookApiService {
     @POST("users/login")
-    fun login(@Body user:User): Call<User>
+    fun login(@Body user:User): Call<ResponseBody>
 
     @POST("users/register")
-    fun register(@Body user: User): Call<User>
+    fun register(@Body user: User): Call<ResponseBody>
 
     @POST("users/checkusername")
-    fun checkUsername(@Body username:User):Call<User>
+    fun checkUsername(@Body username:User):Call<ResponseBody>
 }
 
 object BookApi {
