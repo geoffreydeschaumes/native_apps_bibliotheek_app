@@ -8,17 +8,55 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="bookDetailsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="214" />
+                            <option name="y" value="61" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="bookListFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-218" />
+                            <option name="y" value="65" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_bookListFragment_to_bookDetailsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="loginFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-712" />
+                            <option name="y" value="-68" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_loginFragment_to_bookListFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_loginFragment_to_registrationFragment">
                               <value>
                                 <LayoutPositions />
@@ -34,9 +72,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="265" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-556" />
+                            <option name="y" value="430" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_registrationFragment_to_bookListFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

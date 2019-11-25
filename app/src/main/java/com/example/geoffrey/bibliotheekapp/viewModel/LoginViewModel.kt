@@ -8,6 +8,8 @@ import android.databinding.Bindable
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
+import androidx.navigation.findNavController
+import com.example.geoffrey.bibliotheekapp.R
 import com.example.geoffrey.bibliotheekapp.activities.MainActivity
 import com.example.geoffrey.bibliotheekapp.models.User
 import com.example.geoffrey.bibliotheekapp.network.BookApi
@@ -62,9 +64,13 @@ class LoginViewModel: ViewModel() {
     }
 
     fun onLoginSuccess(response: Response<ResponseBody>, user:User, view: View) {
-        Log.d(response.body().toString(), "body voor registratiescherm.")
+        /*Log.d(response.body().toString(), "body voor registratiescherm.")
         val i = Intent(view.context, MainActivity::class.java)
-        ContextCompat.startActivity(view.context, i, null)
+        ContextCompat.startActivity(view.context, i, null)*/
+        view.findNavController().navigate(R.id.action_loginFragment_to_bookListFragment)
+    }
+    fun registrationPage(view: View){
+        view.findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
     }
 
 }

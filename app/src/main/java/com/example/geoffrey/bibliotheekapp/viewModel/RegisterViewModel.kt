@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import com.example.geoffrey.bibliotheekapp.R
 import com.example.geoffrey.bibliotheekapp.activities.MainActivity
 import com.example.geoffrey.bibliotheekapp.models.User
 import com.example.geoffrey.bibliotheekapp.network.BookApi
@@ -90,9 +92,11 @@ class RegisterViewModel():  ViewModel() {
     }
 
     fun onUsernameRegister(response: Response<ResponseBody>, user:User, view:View) {
-        Log.d(response.body().toString(), "body voor registratiescherm.")
+        /*Log.d(response.body().toString(), "body voor registratiescherm.")
         val i = Intent(view.context, MainActivity::class.java)
         startActivity(view.context, i, null)
+        */
+        view.findNavController().navigate(R.id.action_registrationFragment_to_bookListFragment)
     }
 
 }
