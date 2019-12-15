@@ -1,10 +1,10 @@
 package com.example.geoffrey.bibliotheekapp.network
-
-import android.arch.lifecycle.MutableLiveData
 import com.example.geoffrey.bibliotheekapp.models.Book
 import com.example.geoffrey.bibliotheekapp.models.User
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Call
 
@@ -23,6 +23,7 @@ private val moshi = Moshi.Builder()
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
+    .addCallAdapterFactory(CoroutineCallAdapterFactory())
     .baseUrl(BASE_URL)
     .build()
 
@@ -40,7 +41,7 @@ interface BookApiService {
     fun getBooks ():Call<List<Book>>
 
     @GET("boek/{id}")
-    fun getBookById(@Path("id") id:String? ) : Call<Book>
+    fun getBookById(@Path("id") id:String? ) : Deferred<Book>
 }
 
 object BookApi {

@@ -14,7 +14,7 @@
                 android:id="@+id/token"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={loginViewModel._token}"
+                android:text="@{loginViewModel.token}"
                 android:gravity="center"/>
 
         <TextView

@@ -40,5 +40,14 @@
         <argument
                 android:name="workId"
                 app:argType="string" />
+        <action
+                android:id="@+id/action_bookDetailsFragment_to_reservationListFragment"
+                app:destination="@id/reservationListFragment" />
     </fragment>
+    <fragment
+            android:id="@+id/reservationListFragment"
+            android:name="com.example.geoffrey.bibliotheekapp.fragments.ReservationListFragment"
+            android:label="ReservationListFragment"
+            tools:layout="@layout/fragment_reservation_list"
+            />
 </navigation>

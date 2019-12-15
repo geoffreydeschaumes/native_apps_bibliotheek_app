@@ -1,7 +1,7 @@
 package com.example.geoffrey.bibliotheekapp.activities
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.geoffrey.bibliotheekapp.R
 
 class MainActivity : AppCompatActivity() {

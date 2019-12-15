@@ -1,14 +1,14 @@
 package com.example.geoffrey.bibliotheekapp.fragments
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
-import android.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProviders
 import com.example.geoffrey.bibliotheekapp.R
 import com.example.geoffrey.bibliotheekapp.viewModel.RegisterViewModel
 import com.example.geoffrey.bibliotheekapp.databinding.FragmentRegistrationBinding
