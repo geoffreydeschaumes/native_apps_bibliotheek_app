@@ -7,13 +7,11 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 private const val BASE_URL = "http://10.0.2.2:3000/api/"
 
@@ -29,19 +27,22 @@ private val retrofit = Retrofit.Builder()
 
 interface BookApiService {
     @POST("users/login")
-    fun login(@Body user:User): Call<ResponseBody>
+    fun login(@Body user:User): Deferred<ResponseBody>
 
     @POST("users/register")
-    fun register(@Body user: User): Call<ResponseBody>
+    fun register(@Body user: User): Deferred<ResponseBody>
 
     @POST("users/checkusername")
-    fun checkUsername(@Body username:User):Call<ResponseBody>
+    fun checkUsername(@Body username:User):Deferred<ResponseBody>
 
     @GET("boeken")
-    fun getBooks ():Call<List<Book>>
+    fun getBooks ():Deferred<List<Book>>
 
     @GET("boek/{id}")
     fun getBookById(@Path("id") id:String? ) : Deferred<Book>
+
+    @POST("winkelwagen")
+    fun saveReservationsToDatabase(@Body shopList:List<Book>?, @Header("Authorization") token: String):Deferred<ResponseBody>
 }
 
 object BookApi {

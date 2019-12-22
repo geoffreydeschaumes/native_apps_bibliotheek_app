@@ -9,15 +9,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import com.example.geoffrey.bibliotheekapp.R
+import com.example.geoffrey.bibliotheekapp.database.BookDatabase
 import com.example.geoffrey.bibliotheekapp.database.BookDatabaseDao
 import com.example.geoffrey.bibliotheekapp.models.Book
 import com.example.geoffrey.bibliotheekapp.network.BookApi
+import com.example.geoffrey.bibliotheekapp.repositories.BookRepository
 import kotlinx.android.synthetic.main.fragment_book_details.view.*
 import kotlinx.coroutines.*
 
 class BookDetailsViewModel(val database: BookDatabaseDao, application: Application): AndroidViewModel(application){//AndroidViewModel(/*application*/) {
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+    private val bookRepository = BookRepository(BookDatabase.getInstance(application))
     private var book = Book("","", "", "", "", "", "", "", "")
     private var books = listOf<Book>()
     var _workId = MutableLiveData<String>()
@@ -70,27 +73,25 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
 
     init {
         getBookById()
-       /*coroutineScope.launch {
-            temporary()
+        /*coroutineScope.launch {
+            remove()
         }*/
-       /* if(getBookIsReservated()) {
+        if(getBookIsReservated()) {
             _reservateBtnText.value = "Remove from reservations"
         }
         else {
             _reservateBtnText.value = "Add to reservations"
         }
-        */
     }
-    private suspend fun temporary(){
-        return withContext(Dispatchers.IO){
+    private suspend fun remove () {
+        withContext(Dispatchers.IO){
             database.remove()
         }
     }
     private fun getBookById() {
         coroutineScope.launch {
-            val bookById = BookApi.retrofitService.getBookById(_workId.value)
             try {
-                 book = bookById.await()
+                 book = bookRepository.getBookById(_workId.value)
                 _workId.value = book.werkId
                 _title.value = book.titel
                 _BKBBNummer.value = book.bKBBNummer
@@ -109,35 +110,32 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
     }
     fun saveToReservations (view:View){
         coroutineScope.launch {
-            saveReservationsInLocalDatabase(view)
-        }
-
-    }
-    private suspend fun saveReservationsInLocalDatabase(view:View) {
-        val control = getBookIsReservated()
-        return if(!control) {
-            withContext(Dispatchers.IO) {
-                database.insert(book)
-                _reservateBtnText.postValue("Remove from reservations")
-                getBooksList()
+            try {
+                if(!getBookIsReservated()) {
+                    bookRepository.insertBook(book)
+                    _reservateBtnText.postValue("Remove book from reservations")
+                }
+                else {
+                    bookRepository.removeBook(book.werkId)
+                    _reservateBtnText.postValue("Add book to reservations")
+                }
+            } catch(e: Exception) {
+                Log.d("bookDetailsError", e.message)
             }
-        } else {
-            withContext(Dispatchers.IO) {
-                database.removeBook(book.werkId)
-                _reservateBtnText.postValue("Add to reservations")
-                getBooksList()
+            view.findNavController().navigate(R.id.action_bookDetailsFragment_to_reservationListFragment)
+        }
 
-        }
-           // view.findNavController().navigate(R.id.action_bookDetailsFragment_to_reservationListFragment)
-        }
     }
 
     fun getBookIsReservated(): Boolean {
 
         coroutineScope.launch {
-            getBooksList()
+            try {
+                books = bookRepository.getBooksList()
+            } catch(e:Exception) {
+                Log.d("getBooksListError", e.message)
+            }
         }
-        Log.d("bookSize", books?.size.toString())
         val booksLength = books?.size
         if(booksLength != 0){
             for(reservatedBook in books) {
@@ -147,12 +145,6 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
             }
         }
         return false
-    }
-
-    private suspend fun getBooksList() {
-        return withContext(Dispatchers.IO) {
-            books = database.getBooks()
-        }
     }
     override fun onCleared() {
         super.onCleared()

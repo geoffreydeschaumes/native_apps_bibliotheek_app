@@ -1,31 +1,33 @@
 package com.example.geoffrey.bibliotheekapp.repositories
 
 import android.util.Log
+import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.geoffrey.bibliotheekapp.database.BookDatabase
+import com.example.geoffrey.bibliotheekapp.database.BookDatabaseDao_Impl
 import com.example.geoffrey.bibliotheekapp.models.User
 import com.example.geoffrey.bibliotheekapp.network.BookApi
+import kotlinx.coroutines.*
 import okhttp3.ResponseBody
+import okhttp3.internal.http.RealResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class UserRepository{
-    fun login(user:User):String {
-        var loggedInComment = ""
-        BookApi.retrofitService.login(user).enqueue(object: Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                loggedInComment = "" + t.message
-            }
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                   if(response.code() != 200) {
-                       loggedInComment = "User does not exist"
-                   } else {
-                       ""
-                   }
-            }
+    suspend fun login(user:User):ResponseBody {
+            return BookApi.retrofitService.login(user).await()
+    }
 
-        })
-        return loggedInComment
+    suspend fun registrate(user:User) : ResponseBody {
+
+        return BookApi.retrofitService.register(user).await()
+    }
+
+    suspend fun checkUsername(user:User):ResponseBody{
+        return BookApi.retrofitService.checkUsername(user).await()
     }
 }

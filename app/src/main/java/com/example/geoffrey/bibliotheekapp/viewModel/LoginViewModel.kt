@@ -7,12 +7,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import com.example.geoffrey.bibliotheekapp.R
+import com.example.geoffrey.bibliotheekapp.activities.prefs
 import com.example.geoffrey.bibliotheekapp.models.User
 import com.example.geoffrey.bibliotheekapp.repositories.UserRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class LoginViewModel: ViewModel() {
 
-
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+    private val userRepo = UserRepository()
     var _username = MutableLiveData<String>()
     val username: LiveData<String>
         get() = _username
@@ -32,14 +39,17 @@ class LoginViewModel: ViewModel() {
         _password.value = ""
         _token.value = ""
     }
-    private val userRepo = UserRepository()
      fun loginUser(view:View) {
          val user = User(username.value.toString(), password.value.toString())
-         val userLogin = userRepo.login(user)
-         if(userLogin == "") {
-             onLoginSuccess(view)
-         } else {
-             _token.value = userLogin
+         coroutineScope.launch {
+             try {
+                 userRepo.login(user)
+                 prefs.setCurrentUser(userRepo.login(user).string())
+                 onLoginSuccess(view)
+             }
+             catch (e: Exception) {
+                 _token.value = e.message
+             }
          }
     }
 

@@ -1,5 +1,6 @@
 package com.example.geoffrey.bibliotheekapp.viewModel
 
+import android.util.Log
 import androidx.databinding.Bindable
 import android.view.View
 import androidx.lifecycle.LiveData
@@ -9,13 +10,16 @@ import androidx.navigation.findNavController
 import com.example.geoffrey.bibliotheekapp.R
 import com.example.geoffrey.bibliotheekapp.models.User
 import com.example.geoffrey.bibliotheekapp.network.BookApi
+import com.example.geoffrey.bibliotheekapp.repositories.UserRepository
+import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class RegisterViewModel:  ViewModel() {
-
+    private val userRepo = UserRepository()
 
     var _username = MutableLiveData<String>()
     val username: LiveData<String>
@@ -34,7 +38,8 @@ class RegisterViewModel:  ViewModel() {
     val token: LiveData<String>
         get() = _token
 
-
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     init {
         _username.value = ""
         _password.value = ""
@@ -44,51 +49,31 @@ class RegisterViewModel:  ViewModel() {
 
     fun checkUsername(view:View) {
         val user = User(username.value.toString(), password.value.toString())
-        BookApi.retrofitService.checkUsername(user).enqueue(object: Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                _token.value = "Failure " + t.message
-            }
-
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if(response.body()!!.string().length != 25){
-                    registrate(view)
-                }
-                else {
-                    _token.value = "The username does exist already!"
-                }
-            }
-
-        })
+        if(password != repeatPassword) {
+            _token.value = "password and repeat password aren't similar!"
+        } else {
+            registrate(user, view)
+        }
     }
-
-    fun registrate(view:View) {
-        val user = User(username.value.toString(), password.value.toString())
-        if(username.value.equals(null) || username.value.equals("") ||password.value.equals(null) || password.value.equals("") || repeatPassword.value.equals(null) || repeatPassword.value.equals("")){
-            _token.value = "Fill in all the fields."
-        }
-        else if (password.value.toString() != repeatPassword.value.toString()) {
-            _token.value = "Repeat password isn't the same as password."
-        }
-        else {
-            BookApi.retrofitService.register(user).enqueue(object : Callback<ResponseBody> {
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    _token.value = "Failure" + t.message
+    private fun registrate(user:User, view:View){
+        coroutineScope.launch {
+            try {
+                val checkuser = userRepo.checkUsername(user)
+                if (checkuser.contentLength().toString() == "25") {
+                    _token.value = "User does already exist!"
+                } else {
+                    userRepo.registrate(user)
+                    onUsernameRegister(view)
                 }
+            } catch (e: Exception) {
+                _token.value = e.message
 
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    onUsernameRegister(response, user, view)
-                    _token.value = "true"
-                }
-
-            })
+            }
         }
     }
 
-    fun onUsernameRegister(response: Response<ResponseBody>, user:User, view:View) {
-        /*Log.d(response.body().toString(), "body voor registratiescherm.")
-        val i = Intent(view.context, MainActivity::class.java)
-        startActivity(view.context, i, null)
-        */
+
+    fun onUsernameRegister(view:View) {
         view.findNavController().navigate(R.id.action_registrationFragment_to_bookListFragment)
     }
 

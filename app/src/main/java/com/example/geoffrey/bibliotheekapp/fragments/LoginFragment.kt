@@ -1,6 +1,7 @@
 package com.example.geoffrey.bibliotheekapp.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.geoffrey.bibliotheekapp.R
+import com.example.geoffrey.bibliotheekapp.activities.prefs
 import com.example.geoffrey.bibliotheekapp.databinding.FragmentLoginBinding
+import com.example.geoffrey.bibliotheekapp.utils.UserSharedPreferences
 import com.example.geoffrey.bibliotheekapp.viewModel.LoginViewModel
+import kotlinx.android.synthetic.main.fragment_login.*
 
 
 class LoginFragment : Fragment() {
@@ -19,8 +23,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        binding = DataBindingUtil.inflate<FragmentLoginBinding>(inflater, R.layout.fragment_login, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         binding.loginViewModel = loginViewModel
         binding.setLifecycleOwner(this)

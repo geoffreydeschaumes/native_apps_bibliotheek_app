@@ -25,7 +25,8 @@ class BookListFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_book_list, container, false)
-        bookListViewModel = ViewModelProviders.of(this).get(BookViewModel::class.java)
+        val application = requireNotNull(this.activity).application
+        bookListViewModel = ViewModelProviders.of(this, BookViewModel.Factory(application)).get(BookViewModel::class.java)
         binding.bookListViewModel = bookListViewModel
         val adapter = BookListAdapter()
         binding.bookList.adapter = adapter
