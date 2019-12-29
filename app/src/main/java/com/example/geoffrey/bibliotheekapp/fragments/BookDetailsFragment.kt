@@ -1,11 +1,7 @@
 package com.example.geoffrey.bibliotheekapp.fragments
 
-import androidx.lifecycle.LifecycleOwner
-import android.content.Context
 import androidx.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +11,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.geoffrey.bibliotheekapp.R
 import com.example.geoffrey.bibliotheekapp.database.BookDatabase
 import com.example.geoffrey.bibliotheekapp.databinding.FragmentBookDetailsBinding
-import com.example.geoffrey.bibliotheekapp.databinding.FragmentBookListBinding
 import com.example.geoffrey.bibliotheekapp.factory.BookDetailsViewModelFactory
 import com.example.geoffrey.bibliotheekapp.viewModel.BookDetailsViewModel
-import kotlinx.android.synthetic.main.fragment_book_details.*
 
 class BookDetailsFragment : Fragment() {
     private lateinit var binding: FragmentBookDetailsBinding
