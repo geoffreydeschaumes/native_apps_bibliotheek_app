@@ -49,7 +49,7 @@ class RegisterViewModel:  ViewModel() {
 
     fun checkUsername(view:View) {
         val user = User(username.value.toString(), password.value.toString())
-        if(password != repeatPassword) {
+        if(_password.value != _repeatPassword.value) {
             _token.value = "password and repeat password aren't similar!"
         } else {
             registrate(user, view)

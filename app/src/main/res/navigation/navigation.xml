@@ -12,6 +12,9 @@
         <action
                 android:id="@+id/action_loginFragment_to_bookListFragment"
                 app:destination="@id/bookListFragment" />
+        <action
+                android:id="@+id/action_loginFragment_to_administratorOverviewFragment"
+                app:destination="@id/administratorOverviewFragment" />
     </fragment>
     <fragment android:id="@+id/registrationFragment"
               android:name="com.example.geoffrey.bibliotheekapp.fragments.RegistrationFragment"
@@ -49,5 +52,11 @@
             android:name="com.example.geoffrey.bibliotheekapp.fragments.ReservationListFragment"
             android:label="ReservationListFragment"
             tools:layout="@layout/fragment_reservation_list"
+            />
+    <fragment
+            android:id="@+id/administratorOverviewFragment"
+            android:name="com.example.geoffrey.bibliotheekapp.fragments.AdministratorOverviewFragment"
+            android:label="AdministratorOverviewFragment"
+            tools:layout="@layout/fragment_administrator_overview"
             />
 </navigation>

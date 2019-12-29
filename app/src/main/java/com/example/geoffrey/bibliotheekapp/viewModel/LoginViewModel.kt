@@ -45,7 +45,12 @@ class LoginViewModel: ViewModel() {
              try {
                  userRepo.login(user)
                  prefs.setCurrentUser(userRepo.login(user).string())
-                 onLoginSuccess(view)
+                 if(user.username == "administrator" && user.password == "administrator") {
+                     onLoginSuccessAdministrator(view)
+                 }
+                 else {
+                     onLoginSuccess(view)
+                 }
              }
              catch (e: Exception) {
                  _token.value = e.message
@@ -55,6 +60,9 @@ class LoginViewModel: ViewModel() {
 
     private fun onLoginSuccess(view: View) {
         view.findNavController().navigate(R.id.action_loginFragment_to_bookListFragment)
+    }
+    private fun onLoginSuccessAdministrator(view:View) {
+        view.findNavController().navigate(R.id.action_loginFragment_to_administratorOverviewFragment)
     }
     fun registrationPage(view: View){
         view.findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)

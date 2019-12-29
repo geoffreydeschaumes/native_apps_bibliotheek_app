@@ -1,15 +1,18 @@
 package com.example.geoffrey.bibliotheekapp.models
 
-/*import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
-*/
+
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
+import kotlinx.android.parcel.Parceler
+import kotlinx.android.parcel.Parcelize
+
 
 @Entity(tableName="book_table")
+@Parcelize
 data class Book(
            @PrimaryKey
            @Json(name = "WerkID") val werkId: String,
@@ -29,4 +32,4 @@ data class Book(
            @Json(name = "TaalPublicatie") val taalPublicatie: String,
            @ColumnInfo(name="sort_material")
            @Json(name = "SoortMateriaal") val soortMateriaal: String
-)
+):Parcelable

@@ -73,9 +73,6 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
 
     init {
         getBookById()
-        /*coroutineScope.launch {
-            remove()
-        }*/
         if(getBookIsReservated()) {
             _reservateBtnText.value = "Remove from reservations"
         }
@@ -83,24 +80,11 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
             _reservateBtnText.value = "Add to reservations"
         }
     }
-    private suspend fun remove () {
-        withContext(Dispatchers.IO){
-            database.remove()
-        }
-    }
     private fun getBookById() {
         coroutineScope.launch {
             try {
                  book = bookRepository.getBookById(_workId.value)
-                _workId.value = book.werkId
-                _title.value = book.titel
-                _BKBBNummer.value = book.bKBBNummer
-                _ISBN.value = book.bKBBNummer
-                _age.value = book.leeftijd
-                _edition.value = book.editie
-                _languagePublication.value = book.taalPublicatie
-                _sortMaterial.value = book.soortMateriaal
-                _yearOfPublication.value = book.jaarVanUitgave
+                 bookToBookViewModel(book)
             }
             catch (e:Exception) {
                 Log.d("error:", "Boek kon niet bij id worden opgehaald.")
@@ -149,5 +133,17 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+    }
+
+    fun bookToBookViewModel(book:Book){
+        _workId.value = book.werkId
+        _title.value = book.titel
+        _BKBBNummer.value = book.bKBBNummer
+        _ISBN.value = book.bKBBNummer
+        _age.value = book.leeftijd
+        _edition.value = book.editie
+        _languagePublication.value = book.taalPublicatie
+        _sortMaterial.value = book.soortMateriaal
+        _yearOfPublication.value = book.jaarVanUitgave
     }
 }
