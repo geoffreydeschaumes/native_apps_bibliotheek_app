@@ -10,9 +10,6 @@
         <action android:id="@+id/action_loginFragment_to_registrationFragment"
                 app:destination="@id/registrationFragment"/>
         <action
-                android:id="@+id/action_loginFragment_to_bookListFragment"
-                app:destination="@id/bookListFragment" />
-        <action
                 android:id="@+id/action_loginFragment_to_administratorOverviewFragment"
                 app:destination="@id/administratorOverviewFragment" />
     </fragment>
@@ -20,39 +17,7 @@
               android:name="com.example.geoffrey.bibliotheekapp.fragments.RegistrationFragment"
               android:label="RegistrationFragment"
               tools:layout="@layout/fragment_registration"
-    >
-        <action
-                android:id="@+id/action_registrationFragment_to_bookListFragment"
-                app:destination="@id/bookListFragment" />
-    </fragment>
-    <fragment
-            android:id="@+id/bookListFragment"
-            android:name="com.example.geoffrey.bibliotheekapp.fragments.BookListFragment"
-            tools:layout="@layout/fragment_book_list"
-            android:label="BookListFragment" >
-        <action
-                android:id="@+id/action_bookListFragment_to_bookDetailsFragment"
-                app:destination="@id/bookDetailsFragment" />
-    </fragment>
-    <fragment
-            android:id="@+id/bookDetailsFragment"
-            android:name="com.example.geoffrey.bibliotheekapp.fragments.BookDetailsFragment"
-            android:label="BookDetailsFragment"
-            tools:layout="@layout/fragment_book_details"
-            >
-        <argument
-                android:name="workId"
-                app:argType="string" />
-        <action
-                android:id="@+id/action_bookDetailsFragment_to_reservationListFragment"
-                app:destination="@id/reservationListFragment" />
-    </fragment>
-    <fragment
-            android:id="@+id/reservationListFragment"
-            android:name="com.example.geoffrey.bibliotheekapp.fragments.ReservationListFragment"
-            android:label="ReservationListFragment"
-            tools:layout="@layout/fragment_reservation_list"
-            />
+    />
     <fragment
             android:id="@+id/administratorOverviewFragment"
             android:name="com.example.geoffrey.bibliotheekapp.fragments.AdministratorOverviewFragment"

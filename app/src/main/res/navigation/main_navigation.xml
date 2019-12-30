@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main_navigation"
+        xmlns:tools="http://schemas.android.com/tools"
+        app:startDestination="@id/bookListFragment">
+    <fragment
+            android:id="@+id/bookListFragment"
+            android:name="com.example.geoffrey.bibliotheekapp.fragments.BookListFragment"
+            android:label="BookListFragment"
+            tools:layout="@layout/fragment_book_list"
+            >
+        <action
+                android:id="@+id/action_bookListFragment_to_bookDetailsFragment"
+                app:destination="@id/bookDetailsFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/bookDetailsFragment"
+            android:name="com.example.geoffrey.bibliotheekapp.fragments.BookDetailsFragment"
+            android:label="BookDetailsFragment"
+            tools:layout="@layout/fragment_book_details"
+            >
+        <action
+                android:id="@+id/action_bookDetailsFragment_to_reservationListFragment"
+                app:destination="@id/reservationListFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/reservationListFragment"
+            android:name="com.example.geoffrey.bibliotheekapp.fragments.ReservationListFragment"
+            android:label="ReservationListFragment"
+            tools:layout="@layout/fragment_reservation_list"
+            />
+
+</navigation>

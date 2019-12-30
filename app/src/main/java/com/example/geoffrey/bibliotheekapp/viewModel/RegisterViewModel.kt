@@ -1,5 +1,6 @@
 package com.example.geoffrey.bibliotheekapp.viewModel
 
+import android.content.Intent
 import android.util.Log
 import androidx.databinding.Bindable
 import android.view.View
@@ -47,15 +48,15 @@ class RegisterViewModel:  ViewModel() {
         _token.value = ""
     }
 
-    fun checkUsername(view:View) {
+    fun checkUsername(view:View, startActivity:Unit) {
         val user = User(username.value.toString(), password.value.toString())
         if(_password.value != _repeatPassword.value) {
             _token.value = "password and repeat password aren't similar!"
         } else {
-            registrate(user, view)
+            registrate(user, view, startActivity)
         }
     }
-    private fun registrate(user:User, view:View){
+    fun registrate(user:User, view:View, startActivity:Unit){
         coroutineScope.launch {
             try {
                 val checkuser = userRepo.checkUsername(user)
@@ -63,7 +64,7 @@ class RegisterViewModel:  ViewModel() {
                     _token.value = "User does already exist!"
                 } else {
                     userRepo.registrate(user)
-                    onUsernameRegister(view)
+                    startActivity
                 }
             } catch (e: Exception) {
                 _token.value = e.message
@@ -73,8 +74,6 @@ class RegisterViewModel:  ViewModel() {
     }
 
 
-    fun onUsernameRegister(view:View) {
-        view.findNavController().navigate(R.id.action_registrationFragment_to_bookListFragment)
-    }
+
 
 }

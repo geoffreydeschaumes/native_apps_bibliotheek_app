@@ -1,12 +1,17 @@
 package com.example.geoffrey.bibliotheekapp.viewModel
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import com.example.geoffrey.bibliotheekapp.R
+import com.example.geoffrey.bibliotheekapp.activities.LoginActivity
 import com.example.geoffrey.bibliotheekapp.activities.prefs
 import com.example.geoffrey.bibliotheekapp.models.User
 import com.example.geoffrey.bibliotheekapp.repositories.UserRepository
@@ -39,7 +44,7 @@ class LoginViewModel: ViewModel() {
         _password.value = ""
         _token.value = ""
     }
-     fun loginUser(view:View) {
+     fun loginUser(view:View, startActivity:Unit) {
          val user = User(username.value.toString(), password.value.toString())
          coroutineScope.launch {
              try {
@@ -49,17 +54,13 @@ class LoginViewModel: ViewModel() {
                      onLoginSuccessAdministrator(view)
                  }
                  else {
-                     onLoginSuccess(view)
+                     startActivity
                  }
              }
              catch (e: Exception) {
                  _token.value = e.message
              }
          }
-    }
-
-    private fun onLoginSuccess(view: View) {
-        view.findNavController().navigate(R.id.action_loginFragment_to_bookListFragment)
     }
     private fun onLoginSuccessAdministrator(view:View) {
         view.findNavController().navigate(R.id.action_loginFragment_to_administratorOverviewFragment)
