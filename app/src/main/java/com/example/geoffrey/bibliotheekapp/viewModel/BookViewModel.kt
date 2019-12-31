@@ -30,6 +30,10 @@ class BookViewModel(application:Application): ViewModel() {
     val bookList: LiveData<List<Book>>
         get() = _bookList
 
+    var _filteredBookList = MutableLiveData<ArrayList<Book>>()
+    val filteredBookList: LiveData<ArrayList<Book>>
+        get() = _filteredBookList
+
     init {
         getBooks()
     }
@@ -40,6 +44,17 @@ class BookViewModel(application:Application): ViewModel() {
                 _bookList.value = bookRepo.getBooks()
             } catch (e: Exception) {
                 Log.d("error", e.message)
+            }
+        }
+    }
+
+    fun filterBookListByTitleOrSortMaterial(filterText:String?) {
+        _filteredBookList.value = arrayListOf()
+        val filterTextLowerCase = filterText?.toLowerCase() + ""
+        for(book in _bookList.value.orEmpty())
+        {
+            if(book.titel.toLowerCase().contains(filterTextLowerCase) || book.soortMateriaal.toLowerCase().contains(filterTextLowerCase) || book.taalPublicatie.toLowerCase().contains(filterTextLowerCase)) {
+                _filteredBookList.value?.add(book)
             }
         }
     }

@@ -1,27 +1,27 @@
 package com.example.geoffrey.bibliotheekapp.fragments
 
-import android.content.Intent
-import androidx.lifecycle.LifecycleOwner
+import android.app.Activity
+import android.app.SearchManager
+import android.content.Context
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.example.geoffrey.bibliotheekapp.R
-import com.example.geoffrey.bibliotheekapp.activities.LoginActivity
 import com.example.geoffrey.bibliotheekapp.activities.MainActivity
 import com.example.geoffrey.bibliotheekapp.adapter.BookListAdapter
 import com.example.geoffrey.bibliotheekapp.databinding.FragmentBookListBinding
+import com.example.geoffrey.bibliotheekapp.models.Book
 import com.example.geoffrey.bibliotheekapp.viewModel.BookViewModel
-import java.nio.channels.Selector
 
 
 class BookListFragment : MenuBaseFragment(){
     private lateinit var binding: FragmentBookListBinding
     private lateinit var bookListViewModel: BookViewModel
+    private lateinit var adapter:BookListAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,15 +32,45 @@ class BookListFragment : MenuBaseFragment(){
         val application = requireNotNull(this.activity).application
         bookListViewModel = ViewModelProviders.of(this, BookViewModel.Factory(application)).get(BookViewModel::class.java)
         binding.bookListViewModel = bookListViewModel
-        val adapter = BookListAdapter()
+        adapter = BookListAdapter()
         binding.bookList.adapter = adapter
-        bookListViewModel.bookList.observe(viewLifecycleOwner, Observer {
+        fillAdapter(bookListViewModel.bookList)
+        binding.setLifecycleOwner(this)
+        return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.search_list, menu)
+        var searchManager = getMainActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchItem = menu?.findItem(R.id.searchFilter)
+        val searchView = searchItem?.actionView as SearchView
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getMainActivity().componentName))
+
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                bookListViewModel.filterBookListByTitleOrSortMaterial(newText)
+                fillAdapter(bookListViewModel.filteredBookList as LiveData<List<Book>>)
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+        })
+    }
+
+    private fun getMainActivity():Activity{
+        return activity as MainActivity
+    }
+
+    private fun fillAdapter(bookList: LiveData<List<Book>>) {
+        bookList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.data = it
             }
         })
-        binding.setLifecycleOwner(this)
-        return binding.root
     }
 
 
