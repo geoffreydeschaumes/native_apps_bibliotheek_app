@@ -22,7 +22,7 @@ import com.example.geoffrey.bibliotheekapp.viewModel.ReservationListViewModel
 /**
  * A simple [Fragment] subclass.
  */
-class ReservationListFragment : Fragment() {
+class ReservationListFragment : MenuBaseFragment() {
     private lateinit var binding: FragmentReservationListBinding
     private lateinit var reservationListViewModel: ReservationListViewModel
     override fun onCreateView(
@@ -30,6 +30,7 @@ class ReservationListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        super.onCreateView(inflater, container, savedInstanceState)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_reservation_list, container, false)
         val application = requireNotNull(this.activity).application
         val dataSource = BookDatabase.getInstance(application).bookDatabaseDao

@@ -14,13 +14,14 @@ import com.example.geoffrey.bibliotheekapp.databinding.FragmentBookDetailsBindin
 import com.example.geoffrey.bibliotheekapp.factory.BookDetailsViewModelFactory
 import com.example.geoffrey.bibliotheekapp.viewModel.BookDetailsViewModel
 
-class BookDetailsFragment : Fragment() {
+class BookDetailsFragment : MenuBaseFragment() {
     private lateinit var binding: FragmentBookDetailsBinding
     private lateinit var bookDetailsViewModel: BookDetailsViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_book_details, container, false)
         val application = requireNotNull(this.activity).application
         val dataSource = BookDatabase.getInstance(application).bookDatabaseDao

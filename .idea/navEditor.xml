@@ -17,6 +17,15 @@
                             <option name="y" value="37" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_bookDetailsFragment_to_reservationListFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -31,7 +40,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_bookListFragment_to_bookDetailsFragment2">
+                            <entry key="action_bookListFragment_to_bookDetailsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -41,13 +50,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="reservationListFragment2">
+                  <entry key="reservationListFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="494" />
-                            <option name="y" value="44" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>
