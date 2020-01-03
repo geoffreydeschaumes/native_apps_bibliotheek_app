@@ -4,7 +4,8 @@ import android.app.Activity
 import android.content.Context
 
 
-class UserSharedPreferences(var context: Context) {  private var PREF_NAME = "myPrefs"
+class UserSharedPreferences(var context: Context) {
+    private var PREF_NAME = "myPrefs"
     private var CUR_USER = "currentUser"
     /**
      *  returns the sharedPreference with name myPrefs (token) in private Mode

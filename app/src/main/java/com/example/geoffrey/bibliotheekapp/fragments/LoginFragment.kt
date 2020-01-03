@@ -1,6 +1,7 @@
 package com.example.geoffrey.bibliotheekapp.fragments
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 class LoginFragment : Fragment() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: FragmentLoginBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,7 +40,7 @@ class LoginFragment : Fragment() {
     }
     fun login(view:View){
         val intent = Intent(activity, MainActivity::class.java)
-        loginViewModel.loginUser(view, startActivity(intent))
+        loginViewModel.loginUser(view, intent)
 
     }
 }

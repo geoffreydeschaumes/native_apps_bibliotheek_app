@@ -43,10 +43,10 @@ interface BookApiService {
     fun login(@Body user:User): Deferred<ResponseBody>
 
     @POST("users/register")
-    fun register(@Body user: User): Deferred<ResponseBody>
+    fun register(@Body user: User): Deferred<Response<ResponseBody>>
 
     @POST("users/checkusername")
-    fun checkUsername(@Body username:User):Deferred<ResponseBody>
+    fun checkUsername(@Body username:User):Deferred<Response<User>>
 
     @GET("boeken")
     fun getBooks ():Deferred<List<Book>>

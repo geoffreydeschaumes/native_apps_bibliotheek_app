@@ -47,8 +47,4 @@ class ReservationListFragment : MenuBaseFragment() {
         binding.setLifecycleOwner(this)
         return binding.root
     }
-
-
-
-
 }

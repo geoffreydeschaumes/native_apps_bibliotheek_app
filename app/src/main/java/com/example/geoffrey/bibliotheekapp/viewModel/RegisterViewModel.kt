@@ -1,5 +1,6 @@
 package com.example.geoffrey.bibliotheekapp.viewModel
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.databinding.Bindable
@@ -9,15 +10,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import com.example.geoffrey.bibliotheekapp.R
+import com.example.geoffrey.bibliotheekapp.activities.prefs
 import com.example.geoffrey.bibliotheekapp.models.User
 import com.example.geoffrey.bibliotheekapp.network.BookApi
 import com.example.geoffrey.bibliotheekapp.repositories.UserRepository
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
+import okhttp3.internal.lockAndWaitNanos
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import java.util.*
 
 class RegisterViewModel:  ViewModel() {
     private val userRepo = UserRepository()
@@ -41,6 +45,7 @@ class RegisterViewModel:  ViewModel() {
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
     init {
         _username.value = ""
         _password.value = ""
@@ -48,32 +53,34 @@ class RegisterViewModel:  ViewModel() {
         _token.value = ""
     }
 
-    fun checkUsername(view:View, startActivity:Unit) {
+    fun checkUsername(view:View, intent:Intent) {
         val user = User(username.value.toString(), password.value.toString())
-        if(_password.value != _repeatPassword.value) {
-            _token.value = "password and repeat password aren't similar!"
+        if (_password.value != _repeatPassword.value || _username.value == "" || _password.value == "") {
+            _token.value = "Fill in all the fields correctly!"
         } else {
-            registrate(user, view, startActivity)
-        }
-    }
-    fun registrate(user:User, view:View, startActivity:Unit){
-        coroutineScope.launch {
-            try {
-                val checkuser = userRepo.checkUsername(user)
-                if (checkuser.contentLength().toString() == "25") {
-                    _token.value = "User does already exist!"
-                } else {
-                    userRepo.registrate(user)
-                    startActivity
-                }
-            } catch (e: Exception) {
-                _token.value = e.message
-
+            coroutineScope.launch {
+                     registrate(user, view, intent)
             }
         }
     }
 
-
-
-
+    private suspend fun registrate(user: User, view:View, intent:Intent) {
+                coroutineScope.launch {
+                    try {
+                        if (userRepo.checkUsername(user).body()?.username != "bestaat al") {
+                            val userRegistration = userRepo.registrate(user)
+                            if (userRegistration.code() == 200) {
+                                prefs.setCurrentUser(userRegistration.body()?.string().toString())
+                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                view.context.applicationContext.startActivity(intent)
+                            }
+                        }
+                        else {
+                            _token.value = "User does already exist!"
+                        }
+                    } catch (e: Exception) {
+                        _token.value = e.message
+                    }
+                }
+    }
 }

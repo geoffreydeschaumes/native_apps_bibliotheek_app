@@ -71,8 +71,14 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
     val reservateBtnText: LiveData<String>
         get() = _reservateBtnText
 
+    var _token = MutableLiveData<String>()
+    val token: LiveData<String>
+        get() = _token
+
     init {
-        getBookById()
+        if(_workId.value != "") {
+            getBookById()
+        }
         if(getBookIsReservated()) {
             _reservateBtnText.value = "Remove from reservations"
         }
@@ -92,11 +98,17 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
             }
         }
     }
-    fun saveToReservations (view:View){
+    fun saveToReservations (view:View, orientationFromTheScreen:String){
         coroutineScope.launch {
             try {
                 if(!getBookIsReservated()) {
-                    bookRepository.insertBook(book)
+                    if(book.titel != "") {
+                        _token.value = ""
+                        bookRepository.insertBook(book)
+                    }
+                    else {
+                        _token.value = "There is nothing selected!"
+                    }
                     _reservateBtnText.postValue("Remove book from reservations")
                 }
                 else {
@@ -106,7 +118,13 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
             } catch(e: Exception) {
                 Log.d("bookDetailsError", e.message)
             }
-            view.findNavController().navigate(R.id.action_bookDetailsFragment_to_reservationListFragment)
+            if(orientationFromTheScreen == "portrait")
+                view.findNavController().navigate(R.id.action_bookDetailsFragment_to_reservationListFragment)
+            else
+                if(_token.value == "") {
+                    view.findNavController()
+                        .navigate(R.id.action_bookListFragment_to_reservationListFragment)
+                }
         }
 
     }
@@ -136,6 +154,7 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
     }
 
     fun bookToBookViewModel(book:Book){
+        this.book = book
         _workId.value = book.werkId
         _title.value = book.titel
         _BKBBNummer.value = book.bKBBNummer
@@ -145,5 +164,6 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
         _languagePublication.value = book.taalPublicatie
         _sortMaterial.value = book.soortMateriaal
         _yearOfPublication.value = book.jaarVanUitgave
+        _token.value = ""
     }
 }

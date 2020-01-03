@@ -22,12 +22,12 @@ class UserRepository{
             return BookApi.retrofitService.login(user).await()
     }
 
-    suspend fun registrate(user:User) : ResponseBody {
+    suspend fun registrate(user:User) : Response<ResponseBody> {
 
         return BookApi.retrofitService.register(user).await()
     }
 
-    suspend fun checkUsername(user:User):ResponseBody{
+    suspend fun checkUsername(user:User):Response<User>{
         return BookApi.retrofitService.checkUsername(user).await()
     }
 }

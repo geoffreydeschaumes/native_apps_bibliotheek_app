@@ -235,7 +235,7 @@
                 android:text="@={bookDetailsViewModel._reservateBtnText}"
                 android:layout_marginTop="50dp"
                 android:layout_gravity="center"
-                android:onClick="@{(view) -> bookDetailsViewModel.saveToReservations(view)}"
+                android:onClick='@{(view) -> bookDetailsViewModel.saveToReservations(view, "portrait")}'
         />
 
 

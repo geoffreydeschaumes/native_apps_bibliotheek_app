@@ -1,5 +1,6 @@
 package com.example.geoffrey.bibliotheekapp.fragments
 
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.LifecycleOwner
 import androidx.databinding.DataBindingUtil
@@ -15,6 +16,8 @@ import com.example.geoffrey.bibliotheekapp.activities.MainActivity
 import com.example.geoffrey.bibliotheekapp.viewModel.RegisterViewModel
 import com.example.geoffrey.bibliotheekapp.databinding.FragmentRegistrationBinding
 import kotlinx.android.synthetic.main.fragment_registration.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 
 class RegistrationFragment : Fragment() {
@@ -35,7 +38,7 @@ class RegistrationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         btnRegistration.setOnClickListener {
             val intent = Intent(activity, MainActivity::class.java)
-            registerViewModel.checkUsername(it, startActivity(intent))
+            registerViewModel.checkUsername(it, intent)
         }
     }
 

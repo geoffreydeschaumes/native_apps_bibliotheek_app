@@ -44,7 +44,7 @@ class LoginViewModel: ViewModel() {
         _password.value = ""
         _token.value = ""
     }
-     fun loginUser(view:View, startActivity:Unit) {
+     fun loginUser(view:View, intent:Intent) {
          val user = User(username.value.toString(), password.value.toString())
          coroutineScope.launch {
              try {
@@ -54,7 +54,8 @@ class LoginViewModel: ViewModel() {
                      onLoginSuccessAdministrator(view)
                  }
                  else {
-                     startActivity
+                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                     view.context.applicationContext.startActivity(intent)
                  }
              }
              catch (e: Exception) {
