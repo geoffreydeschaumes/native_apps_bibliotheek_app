@@ -28,4 +28,8 @@ class ReservationListAdapter: RecyclerView.Adapter<itemViewHolder>() {
                 field = value
                 notifyDataSetChanged()
         }
+    fun getWorkIdFromItemPosition(position:Int):String{
+        val item = data[position]
+        return item.werkId
+    }
 }

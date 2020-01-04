@@ -37,5 +37,11 @@ class ReservationListViewModel(val database: BookDatabaseDao, application:Applic
             bookRepository.saveReservationsToDatabase(_bookList.value, token)
         }
     }
+    fun removeBookById(workId:String) {
+        coroutineScope.launch {
+                bookRepository.removeBook(workId)
+            _bookList.value = bookRepository.getBooksList()
+        }
+    }
 
 }
