@@ -13,6 +13,7 @@ import com.example.geoffrey.bibliotheekapp.database.BookDatabase
 import com.example.geoffrey.bibliotheekapp.databinding.FragmentBookDetailsBinding
 import com.example.geoffrey.bibliotheekapp.factory.BookDetailsViewModelFactory
 import com.example.geoffrey.bibliotheekapp.viewModel.BookDetailsViewModel
+import kotlinx.android.synthetic.main.fragment_book_details.*
 
 class BookDetailsFragment : MenuBaseFragment() {
     private lateinit var binding: FragmentBookDetailsBinding
@@ -36,11 +37,16 @@ class BookDetailsFragment : MenuBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(bookDetailsViewModel.getBookIsReservated()) {
-            bookDetailsViewModel._reservateBtnText.value = "Remove from reservations"
+        bookDetailsViewModel.getBooksList(view)
+        /*
+        if(bookDetailsViewModel._reservateBtnText.value == "Add book to reservations") {
+            btnReservate.background = resources.getDrawable(R.drawable.rounded_button_green)
+            btnReservate.setImageResource(R.drawable.ic_add_icon)
         }
         else {
-            bookDetailsViewModel._reservateBtnText.value = "Add to reservations"
-        }
+            btnReservate.background = resources.getDrawable(R.drawable.rounded_button_red)
+            btnReservate.setImageResource(R.drawable.ic_remove_icon)
+        }*/
     }
+
 }

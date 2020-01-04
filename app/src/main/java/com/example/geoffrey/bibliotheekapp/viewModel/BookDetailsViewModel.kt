@@ -1,6 +1,8 @@
 package com.example.geoffrey.bibliotheekapp.viewModel
 
 import android.app.Application
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.AndroidViewModel
@@ -14,6 +16,7 @@ import com.example.geoffrey.bibliotheekapp.database.BookDatabaseDao
 import com.example.geoffrey.bibliotheekapp.models.Book
 import com.example.geoffrey.bibliotheekapp.network.BookApi
 import com.example.geoffrey.bibliotheekapp.repositories.BookRepository
+import kotlinx.android.synthetic.main.fragment_book_details.*
 import kotlinx.android.synthetic.main.fragment_book_details.view.*
 import kotlinx.coroutines.*
 
@@ -79,12 +82,6 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
         if(_workId.value != "") {
             getBookById()
         }
-        if(getBookIsReservated()) {
-            _reservateBtnText.value = "Remove from reservations"
-        }
-        else {
-            _reservateBtnText.value = "Add to reservations"
-        }
     }
     private fun getBookById() {
         coroutineScope.launch {
@@ -101,19 +98,16 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
     fun saveToReservations (view:View, orientationFromTheScreen:String){
         coroutineScope.launch {
             try {
-                if(!getBookIsReservated()) {
-                    if(book.titel != "") {
+                if (_reservateBtnText.value == "Add book to reservations"){
+                    if (book.titel != "") {
                         _token.value = ""
                         bookRepository.insertBook(book)
-                    }
-                    else {
+                    } else {
                         _token.value = "There is nothing selected!"
                     }
-                    _reservateBtnText.postValue("Remove book from reservations")
                 }
                 else {
                     bookRepository.removeBook(book.werkId)
-                    _reservateBtnText.postValue("Add book to reservations")
                 }
             } catch(e: Exception) {
                 Log.d("bookDetailsError", e.message)
@@ -129,25 +123,41 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
 
     }
 
-    fun getBookIsReservated(): Boolean {
-
-        coroutineScope.launch {
-            try {
-                books = bookRepository.getBooksList()
-            } catch(e:Exception) {
-                Log.d("getBooksListError", e.message)
-            }
-        }
-        val booksLength = books?.size
-        if(booksLength != 0){
-            for(reservatedBook in books) {
-                if (reservatedBook == book) {
-                    return true
-                }
-            }
-        }
-        return false
+    private fun setReservateButton(view:View, background:Int, icon:Int){
+        view.btnReservate.background = view.resources.getDrawable(background)
+        view.btnReservate.setImageResource(icon)
     }
+
+    fun getBooksList(view:View) {
+        coroutineScope.launch(Dispatchers.Main) {
+            try {
+                var bookList = bookRepository.getBooksList()
+                var count = 0
+                if (bookList?.size != 0) {
+                    for(reservatedbook in bookList)
+                    {
+                        if(reservatedbook == book) {
+                            count++
+                            setReservateButton(view, R.drawable.rounded_button_red, R.drawable.ic_remove_icon)
+                            _reservateBtnText.value = "Remove from reservations"
+                        }
+                    }
+                    if(count == 0){
+                        setReservateButton(view, R.drawable.rounded_button_green, R.drawable.ic_add_icon)
+                        _reservateBtnText.value = "Add book to reservations"
+                    }
+                }
+                else {
+                    setReservateButton(view, R.drawable.rounded_button_green, R.drawable.ic_add_icon)
+                    _reservateBtnText.value = "Add book to reservations"
+                }
+                books = bookRepository.getBooksList()
+            } catch (e: Exception) {
+                Log.d("getBooksListInDetailVM", e.message)
+            }
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()

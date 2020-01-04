@@ -38,7 +38,7 @@ class BookViewModel(application:Application): ViewModel() {
         getBooks()
     }
 
-    fun getBooks() {
+    private fun getBooks() {
         coroutineScope.launch {
             try {
                 _bookList.value = bookRepo.getBooks()

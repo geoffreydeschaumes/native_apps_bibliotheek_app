@@ -227,14 +227,14 @@
                     app:layout_constraintStart_toEndOf="@+id/txtSortMaterial"
                     app:layout_constraintTop_toTopOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <!--temporary button, change by circle with + in and green background to add-->
-        <Button
+        <ImageButton
                 android:id="@+id/btnReservate"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@={bookDetailsViewModel._reservateBtnText}"
+                android:background="@drawable/rounded_button_green"
                 android:layout_marginTop="50dp"
                 android:layout_gravity="center"
+                android:src="@drawable/ic_add_icon"
                 android:onClick='@{(view) -> bookDetailsViewModel.saveToReservations(view, "portrait")}'
         />
 
