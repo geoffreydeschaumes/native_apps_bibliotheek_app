@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.dokka'
 
 android {
     compileSdkVersion 28
@@ -29,6 +29,10 @@ android {
     }
     androidExtensions {
         experimental = true
+    }
+    dokka {
+        outputFormat = 'html'
+        outputDirectory = "$buildDir/javadoc"
     }
 }
 

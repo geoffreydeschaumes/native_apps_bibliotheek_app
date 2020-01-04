@@ -27,6 +27,18 @@ class BookListFragment : MenuBaseFragment(){
     private lateinit var bookListViewModel: BookViewModel
     private lateinit var bookDetailsViewModel:BookDetailsViewModel
     private lateinit var adapter:BookListAdapter
+    /**
+     *  Called to have the fragent instantiate its user interface view and is called between onCreate(Bundle) and onActivityCreated(Bundle)
+     * @property inflater Is sed to inflate any view in the fragment
+     * @property container if non-null, this is the parent view that the fragment's UI should be attached to.
+     * @property savedInstanceState Bundle: if non-null, this fragment is being re-constructed from a previous saved state as given here
+     *
+     * @return View? return the View for the fragment's UI, or null
+     *
+     * creates bookDetailsViewmodel for landscapeView
+     * creates bookLIstViewModel
+     * and fills the adapter for the recyclerview
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,12 +60,22 @@ class BookListFragment : MenuBaseFragment(){
         return binding.root
     }
 
+    /**
+     * @property view The view returned by onCreateView(LayoutInflater, ViewGroup, Bundle)
+     * @property savedInstanceState Bundle: If non-null, this fragment is being re-constructed from a previous saved state as given here. This value may be null.
+     *calls getBooksList from bookDetailsViewModel. Checks if the book already exists in the reservations saved in the local database
+     * Sets the buttons on the view
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bookDetailsViewModel.getBooksList(view)
+       // bookDetailsViewModel.getBooksList(view)
 
     }
 
+    /**
+     * @property menu Defines a Menu, which is a container for menu items
+     * @property inflater Returns a MenuInflater with this context.
+     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.search_list, menu)

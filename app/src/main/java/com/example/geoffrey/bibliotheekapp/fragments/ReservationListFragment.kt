@@ -32,6 +32,15 @@ class ReservationListFragment : MenuBaseFragment() {
     private val p = Paint()
     private lateinit var adapter:ReservationListAdapter
     private lateinit var reservationListViewModel: ReservationListViewModel
+    /**
+     * Called to have the fragent instantiate its user interface view and is called between onCreate(Bundle) and onActivityCreated(Bundle)
+     * @property inflater Is sed to inflate any view in the fragment
+     * @property container if non-null, this is the parent view that the fragment's UI should be attached to.
+     * @property savedInstanceState Bundle: if non-null, this fragment is being re-constructed from a previous saved state as given here
+     *
+     * @return View? return the View for the fragment's UI, or null
+     *
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +64,9 @@ class ReservationListFragment : MenuBaseFragment() {
         return binding.root
     }
 
+    /**
+     * calls enableSwipe which makes it possible to swipe to the left and remove a book from the list
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         enableSwipe()

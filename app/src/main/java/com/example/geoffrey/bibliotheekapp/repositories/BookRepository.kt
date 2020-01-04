@@ -29,6 +29,11 @@ class BookRepository(private val database: BookDatabase) {
             database.bookDatabaseDao.getBooks()
         }
     }
+    suspend fun removeBooks(){
+        withContext(Dispatchers.IO) {
+            database.bookDatabaseDao.removeBooks()
+        }
+    }
     suspend fun saveReservationsToDatabase(bookList:List<Book>?, token:String):ResponseBody{
         return BookApi.retrofitService.saveReservationsToDatabase(bookList, token).await()
     }

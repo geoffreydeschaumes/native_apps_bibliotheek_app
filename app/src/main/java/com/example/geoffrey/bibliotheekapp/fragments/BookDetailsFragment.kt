@@ -18,7 +18,17 @@ import kotlinx.android.synthetic.main.fragment_book_details.*
 class BookDetailsFragment : MenuBaseFragment() {
     private lateinit var binding: FragmentBookDetailsBinding
     private lateinit var bookDetailsViewModel: BookDetailsViewModel
-    override fun onCreateView(
+/**
+ * Called to have the fragent instantiate its user interface view and is called between onCreate(Bundle) and onActivityCreated(Bundle)
+ * @property inflater Is sed to inflate any view in the fragment
+ * @property container if non-null, this is the parent view that the fragment's UI should be attached to.
+ * @property savedInstanceState Bundle: if non-null, this fragment is being re-constructed from a previous saved state as given here
+ *
+ * @return View? return the View for the fragment's UI, or null
+ * uses application and dataSource to create a BookDetailsViewModel which has variables that bind to the fragment_book_details
+ * takes _workId value from Bundle and uses it to get a book in the BookDetailsViewModel
+ */
+override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -35,18 +45,16 @@ class BookDetailsFragment : MenuBaseFragment() {
         return binding.root
     }
 
+    /**
+     * @property view The view returned by onCreateView(LayoutInflater, ViewGroup, Bundle)
+     * @property savedInstanceState Bundle: If non-null, this fragment is being re-constructed from a previous saved state as given here. This value may be null.
+     *
+     * calls getBooksList from bookDetailsViewModel. Checks if the book already exists in the reservations saved in the local database
+     * Sets the buttons on the view
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bookDetailsViewModel.getBooksList(view)
-        /*
-        if(bookDetailsViewModel._reservateBtnText.value == "Add book to reservations") {
-            btnReservate.background = resources.getDrawable(R.drawable.rounded_button_green)
-            btnReservate.setImageResource(R.drawable.ic_add_icon)
-        }
-        else {
-            btnReservate.background = resources.getDrawable(R.drawable.rounded_button_red)
-            btnReservate.setImageResource(R.drawable.ic_remove_icon)
-        }*/
+        bookDetailsViewModel.getBooksList(view, btnReservate)
     }
 
 }

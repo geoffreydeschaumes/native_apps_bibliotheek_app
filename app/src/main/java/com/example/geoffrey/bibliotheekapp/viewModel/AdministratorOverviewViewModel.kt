@@ -24,6 +24,12 @@ class AdministratorOverviewViewModel:ViewModel() {
     val shopList: LiveData<ArrayList<ShopList>>
         get() = _shopList
 
+    /**
+     * Create a coroutine (non-blocking, asynchronous)
+     * calls the suspended function getShopList from the administratorRepository
+     * add the books to the shopList
+     * and calls the fragment setList to update the adapter
+     */
     fun getShopList(fragment:AdministratorOverviewFragment){
         _shopList.value = arrayListOf()
         coroutineScope.launch {

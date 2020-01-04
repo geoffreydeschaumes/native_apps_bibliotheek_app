@@ -44,6 +44,14 @@ class LoginViewModel: ViewModel() {
         _password.value = ""
         _token.value = ""
     }
+
+    /**
+     * loginUser is called in the LoginFragment
+     * creates a coroutineScope which calls userRepo.login(user) the user is created from username and password
+     * the token is safed in UserSharedPreference
+     *  when the username is administrator another view is opened then when the user has another name
+     *  when the user is not an administrator a new activity (MainActivity) is created
+     */
      fun loginUser(view:View, intent:Intent) {
          val user = User(username.value.toString(), password.value.toString())
          coroutineScope.launch {

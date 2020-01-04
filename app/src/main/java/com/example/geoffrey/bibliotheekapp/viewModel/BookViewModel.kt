@@ -34,10 +34,16 @@ class BookViewModel(application:Application): ViewModel() {
     val filteredBookList: LiveData<ArrayList<Book>>
         get() = _filteredBookList
 
+    /**
+     * calls getBooks method
+     */
     init {
         getBooks()
     }
 
+    /**
+     * creates a coroutine which calls getBooks from the bookRepo (list of books)
+     */
     private fun getBooks() {
         coroutineScope.launch {
             try {
@@ -48,6 +54,10 @@ class BookViewModel(application:Application): ViewModel() {
         }
     }
 
+    /**
+     * filters the booksList on title or sortMaterial
+     * @property filterText is the text used to filter in the list
+     */
     fun filterBookListByTitleOrSortMaterial(filterText:String?) {
         _filteredBookList.value = arrayListOf()
         val filterTextLowerCase = filterText?.toLowerCase() + ""
@@ -58,7 +68,9 @@ class BookViewModel(application:Application): ViewModel() {
             }
         }
     }
-
+    /**
+     * creates a viewmodel from a parameter .class
+     */
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(BookViewModel::class.java)) {

@@ -70,6 +70,9 @@ interface BookApiService {
     fun getUserByObjectId(@Path("id") id:String):Deferred<User>
 }
 
+/**
+ * A BookApi object is created and implements retrofitService by lazy (is only called once) which creates a retrofitservice from BookApiService
+ */
 object BookApi {
     val retrofitService: BookApiService by lazy {
         retrofit.create(BookApiService::class.java)

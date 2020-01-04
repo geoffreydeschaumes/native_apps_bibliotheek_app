@@ -53,18 +53,24 @@ class RegisterViewModel:  ViewModel() {
         _token.value = ""
     }
 
+    /**
+     * When all the fields are filled in correctly, a coroutine is created which calls registrate (user, view, intent)
+     */
     fun checkUsername(view:View, intent:Intent) {
         val user = User(username.value.toString(), password.value.toString())
         if (_password.value != _repeatPassword.value || _username.value == "" || _password.value == "") {
             _token.value = "Fill in all the fields correctly!"
         } else {
-            coroutineScope.launch {
                      registrate(user, view, intent)
-            }
         }
     }
 
-    private suspend fun registrate(user: User, view:View, intent:Intent) {
+    /**
+     * Calls checkusername from the UserRepository which checks if the username does already exist
+     * when it doesnt it calls userRepo.registrate(user) which creates the user and saves the token in the UserScharedPreference
+     * It also opens a new MainActivity since an administrator has to be added by the developper
+     */
+    private fun registrate(user: User, view:View, intent:Intent) {
                 coroutineScope.launch {
                     try {
                         if (userRepo.checkUsername(user).body()?.username != "bestaat al") {

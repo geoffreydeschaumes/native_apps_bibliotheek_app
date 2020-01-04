@@ -16,9 +16,21 @@ import com.example.geoffrey.bibliotheekapp.viewModel.AdministratorOverviewViewMo
 import kotlinx.android.synthetic.main.administrator_recyclerview.*
 
 class AdministratorOverviewFragment : Fragment() {
+
     private lateinit var binding: AdministratorRecyclerviewBinding
     private lateinit var administratorOverviewViewModel: AdministratorOverviewViewModel
     private lateinit var adapter: AdministratorBookAdapter
+    /**
+     * Called to have the fragent instantiate its user interface view and is called between onCreate(Bundle) and onActivityCreated(Bundle)
+     * @property inflater Is sed to inflate any view in the fragment
+     * @property container if non-null, this is the parent view that the fragment's UI should be attached to.
+     * @property savedInstanceState Bundle: if non-null, this fragment is being re-constructed from a previous saved state as given here
+     *
+     * @return View? return the View for the fragment's UI, or null
+     *
+     *
+     * calls the getShopList from administratorOverviewViewModel
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,6 +42,11 @@ class AdministratorOverviewFragment : Fragment() {
         binding.setLifecycleOwner(this)
         return binding.root
     }
+
+    /**
+     * updates AdministratorBookAdapter with a list created in administratorOverviewModel.getShopList(this)
+     * gets the application from this activity to use in the administratorOverviewModel
+     */
     fun setList(){
         val application = requireNotNull(this.activity).application
         adapter = AdministratorBookAdapter( administratorOverviewViewModel._shopList.value, application)

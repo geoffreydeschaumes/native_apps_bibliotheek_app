@@ -14,7 +14,7 @@ interface BookDatabaseDao {
     @Insert
     fun insert(book: Book)
 
-   @Query("SELECT * FROM  book_table")
+    @Query("SELECT * FROM  book_table")
     fun getBooks():List<Book>
 
 
@@ -22,6 +22,6 @@ interface BookDatabaseDao {
     fun removeBook(werkId: String)
 
     @Query ("Delete from book_table")
-    fun remove()
+    fun removeBooks()
 
 }

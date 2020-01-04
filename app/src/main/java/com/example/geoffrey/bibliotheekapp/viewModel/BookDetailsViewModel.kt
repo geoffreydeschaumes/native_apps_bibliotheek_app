@@ -1,23 +1,21 @@
 package com.example.geoffrey.bibliotheekapp.viewModel
 
 import android.app.Application
-import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import com.example.geoffrey.bibliotheekapp.R
+import com.example.geoffrey.bibliotheekapp.activities.landscapePrefs
 import com.example.geoffrey.bibliotheekapp.database.BookDatabase
 import com.example.geoffrey.bibliotheekapp.database.BookDatabaseDao
 import com.example.geoffrey.bibliotheekapp.models.Book
-import com.example.geoffrey.bibliotheekapp.network.BookApi
 import com.example.geoffrey.bibliotheekapp.repositories.BookRepository
-import kotlinx.android.synthetic.main.fragment_book_details.*
-import kotlinx.android.synthetic.main.fragment_book_details.view.*
+import kotlinx.android.synthetic.main.fragment_book_list.view.*
 import kotlinx.coroutines.*
 
 class BookDetailsViewModel(val database: BookDatabaseDao, application: Application): AndroidViewModel(application){//AndroidViewModel(/*application*/) {
@@ -78,11 +76,19 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
     val token: LiveData<String>
         get() = _token
 
+    /**
+     * calls bookById when _workId.value is not equal to ""
+     */
     init {
         if(_workId.value != "") {
             getBookById()
         }
     }
+
+    /**
+     * creates a coroutine which calls the suspended function getBookById from the bookRepository
+     * which then creates the book variable with bookToBookViewModel
+     */
     private fun getBookById() {
         coroutineScope.launch {
             try {
@@ -95,6 +101,12 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
             }
         }
     }
+
+    /**
+     * creates a coroutine which calls insertBook or removeBook from the BookRepository
+     * depending on what the _reservateBtnText.value is
+     * Goes to the next screendepending on portrait or landscape from the device
+     */
     fun saveToReservations (view:View, orientationFromTheScreen:String){
         coroutineScope.launch {
             try {
@@ -123,14 +135,22 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
 
     }
 
-    private fun setReservateButton(view:View, background:Int, icon:Int){
-        view.btnReservate.background = view.resources.getDrawable(background)
-        view.btnReservate.setImageResource(icon)
+    /**
+     * Sets the background color and the src from the ImageButton
+     */
+    private fun setReservateButton(view:View, background:Int, icon:Int, btn:ImageButton){
+        btn.background = view.resources.getDrawable(background)
+        btn.setImageResource(icon)
     }
 
-    fun getBooksList(view:View) {
+    /**
+     * Creates a coroutine which calls getBooksList from bookRepository (gets the reservations from the local database)
+     * checks if the book already exists and calls the setReservateButton method
+     */
+    fun getBooksList(view:View, btn:ImageButton) {
         coroutineScope.launch(Dispatchers.Main) {
             try {
+                book = bookRepository.getBookById(_workId.value)
                 var bookList = bookRepository.getBooksList()
                 var count = 0
                 if (bookList?.size != 0) {
@@ -138,17 +158,17 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
                     {
                         if(reservatedbook == book) {
                             count++
-                            setReservateButton(view, R.drawable.rounded_button_red, R.drawable.ic_remove_icon)
+                            setReservateButton(view, R.drawable.rounded_button_red, R.drawable.ic_remove_icon, btn)
                             _reservateBtnText.value = "Remove from reservations"
                         }
                     }
                     if(count == 0){
-                        setReservateButton(view, R.drawable.rounded_button_green, R.drawable.ic_add_icon)
+                        setReservateButton(view, R.drawable.rounded_button_green, R.drawable.ic_add_icon, btn)
                         _reservateBtnText.value = "Add book to reservations"
                     }
                 }
                 else {
-                    setReservateButton(view, R.drawable.rounded_button_green, R.drawable.ic_add_icon)
+                    setReservateButton(view, R.drawable.rounded_button_green, R.drawable.ic_add_icon, btn)
                     _reservateBtnText.value = "Add book to reservations"
                 }
                 books = bookRepository.getBooksList()

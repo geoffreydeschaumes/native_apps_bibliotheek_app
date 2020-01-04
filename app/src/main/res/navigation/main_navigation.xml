@@ -31,6 +31,10 @@
             android:name="com.example.geoffrey.bibliotheekapp.fragments.ReservationListFragment"
             android:label="ReservationListFragment"
             tools:layout="@layout/fragment_reservation_list"
-            />
+            >
+        <action
+                android:id="@+id/action_reservationListFragment_to_bookListFragment"
+                app:destination="@id/bookListFragment" />
+    </fragment>
 
 </navigation>
