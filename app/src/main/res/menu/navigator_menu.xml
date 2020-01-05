@@ -4,7 +4,7 @@
 
 
     <item android:title="Book list"
-            android:id="@+id/BookListFragment"/>
+            android:id="@+id/bookListFragment"/>
     <item android:title="Reservations"
             android:id="@+id/reservationListFragment"
             />
