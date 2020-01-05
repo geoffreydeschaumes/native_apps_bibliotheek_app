@@ -110,16 +110,27 @@ class BookDetailsViewModel(val database: BookDatabaseDao, application: Applicati
     fun saveToReservations (view:View, orientationFromTheScreen:String){
         coroutineScope.launch {
             try {
-                if (_reservateBtnText.value == "Add book to reservations"){
-                    if (book.titel != "") {
-                        _token.value = ""
+                book = bookRepository.getBookById(_workId.value)
+                var bookList = bookRepository.getBooksList()
+                var count = 0
+                if (bookList?.size != 0) {
+                    for(reservatedbook in bookList)
+                    {
+                        if(reservatedbook == book) {
+                            _token.value = ""
+                            bookRepository.removeBook(book.werkId)
+                            count++
+                            _reservateBtnText.value = "Remove from reservations"
+                        }
+                    }
+                    if(count == 0){
                         bookRepository.insertBook(book)
-                    } else {
-                        _token.value = "There is nothing selected!"
+                        _reservateBtnText.value = "Add book to reservations"
                     }
                 }
                 else {
-                    bookRepository.removeBook(book.werkId)
+                    bookRepository.insertBook(book)
+                    _reservateBtnText.value = "Add book to reservations"
                 }
             } catch(e: Exception) {
                 Log.d("bookDetailsError", e.message)

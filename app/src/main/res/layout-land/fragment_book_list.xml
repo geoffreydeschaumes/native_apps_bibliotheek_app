@@ -3,11 +3,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         >
     <data>
-
+        <variable name="bookDetailsViewModel"
+                type="com.example.geoffrey.bibliotheekapp.viewModel.BookDetailsViewModel"/>
         <variable
                 name="bookListViewModel"
                 type="com.example.geoffrey.bibliotheekapp.viewModel.BookViewModel" />
-        <variable name="bookDetailsViewModel" type="com.example.geoffrey.bibliotheekapp.viewModel.BookDetailsViewModel"/>
+
     </data>
     <LinearLayout
             android:layout_width="match_parent"
@@ -15,12 +16,12 @@
             android:orientation="horizontal">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
                 android:layout_width="300dp"
                 android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/book_list"
+                    android:background="#e9fae3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -230,8 +231,6 @@
                     android:src="@drawable/ic_add_icon"
                     android:onClick='@{(view) -> bookDetailsViewModel.saveToReservations(view, "landscape")}'
                     />
-
-
         </LinearLayout>
     </LinearLayout>
 </layout>

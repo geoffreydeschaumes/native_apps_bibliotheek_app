@@ -20,6 +20,7 @@ import com.example.geoffrey.bibliotheekapp.factory.BookDetailsViewModelFactory
 import com.example.geoffrey.bibliotheekapp.models.Book
 import com.example.geoffrey.bibliotheekapp.viewModel.BookDetailsViewModel
 import com.example.geoffrey.bibliotheekapp.viewModel.BookViewModel
+import kotlinx.android.synthetic.main.fragment_book_list.view.*
 
 
 class BookListFragment : MenuBaseFragment(){
@@ -68,8 +69,7 @@ class BookListFragment : MenuBaseFragment(){
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // bookDetailsViewModel.getBooksList(view)
-
+        bookDetailsViewModel.getBooksList(view, view.btnReservate)
     }
 
     /**
