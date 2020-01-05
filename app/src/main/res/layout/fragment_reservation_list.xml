@@ -25,7 +25,7 @@
 
         <Button
                 android:id="@+id/btnSaveReservation"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Save"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -33,6 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/book_list"
                 app:layout_constraintVertical_bias="0.476"
+                android:background="#25a146"
                 android:onClick="@{(view) -> reservationListViewModel.saveReservationsToDatabase(view)}"
                 />
     </androidx.constraintlayout.widget.ConstraintLayout>
